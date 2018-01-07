@@ -27,9 +27,8 @@ public class NewDataEditorAction extends AnAction {
 
         if (editorDialog.getExitCode() == DialogWrapper.OK_EXIT_CODE) {
             String fileName = editorDialog.getSelectedFileName();
-            String fileType = editorDialog.getSelectedFileType();
 
-            if (fileName == null || fileType == null || selectedFile == null) {
+            if (fileName == null || selectedFile == null) {
                 return;
             }
             if (!selectedFile.isDirectory()) {
