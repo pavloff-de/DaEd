@@ -34,6 +34,10 @@
 
     <actions>
         <!-- Add your actions here -->
+        <action id="NewDataEditorAction" class="de.pavloff.daed.action.NewDataEditorAction" text="New Data Editor"
+                description="Open new Data Editor">
+        <add-to-group group-id="NewGroup" anchor="last"/>
+        </action>
     </actions>
 
 </idea-plugin>
