@@ -22,6 +22,11 @@
     <!-- uncomment to enable plugin in all products
     <depends>com.intellij.modules.lang</depends>
     -->
+    <application-components>
+        <component>
+            <implementation-class>de.pavloff.daed.editor.DataEditorProvider</implementation-class>
+        </component>
+    </application-components>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
