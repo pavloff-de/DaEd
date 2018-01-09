@@ -1,6 +1,7 @@
 package de.pavloff.daed.action;
 
 import com.intellij.openapi.ui.DialogWrapper;
+import de.pavloff.daed.ui.JConstraints;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -22,26 +23,14 @@ public class NewDataEditorDialog extends DialogWrapper {
 
     protected JComponent createNorthPanel() {
         northPanel.setLayout(new GridBagLayout());
-        northPanel.setPreferredSize(new Dimension(400, 140));
+        northPanel.setPreferredSize(new Dimension(400, 70));
 
-        GridBagConstraints c = new GridBagConstraints();
+        JConstraints c = new JConstraints();
 
-        c.anchor = GridBagConstraints.WEST;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(5, 5, 5, 5);
-
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 1;
-        c.gridheight = 1;
+        c.setPos(0, 0);
         northPanel.add(new JLabel("File Name"), c);
 
-        c.gridx = 1;
-        c.gridy = 0;
-        c.gridwidth = 2;
-        c.gridheight = 1;
-        c.weightx = 1;
-        c.weighty = 0;
+        c.setPos(1,0).setWeight(1,0);
         northPanel.add(fileNameText, c);
 
         return northPanel;
