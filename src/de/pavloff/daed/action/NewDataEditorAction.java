@@ -10,6 +10,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import de.pavloff.daed.editor.DataEditor;
+import de.pavloff.daed.editor.DataEditorFactory;
+import de.pavloff.daed.ui.NewDataEditorDialog;
 
 import java.io.File;
 
@@ -44,8 +47,13 @@ public class NewDataEditorAction extends AnAction {
                 return;
             }
 
+            String sep = editorDialog.getSelectedDelimiter();
+
             ApplicationManager.getApplication().runWriteAction(new Runnable() {
                 public void run() {
+                    DataEditor editor = DataEditorFactory.getInstance().getEditor(f.getPath());
+                    editor.setDelimiter(sep);
+
                     VirtualFile v = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(f);
                     assert v != null;
 

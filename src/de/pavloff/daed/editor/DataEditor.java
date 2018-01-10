@@ -5,7 +5,6 @@ import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorLocation;
 import com.intellij.openapi.fileEditor.FileEditorState;
 import com.intellij.openapi.util.UserDataHolderBase;
-import com.intellij.ui.JBColor;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,13 +15,21 @@ import java.beans.PropertyChangeListener;
 
 public class DataEditor extends UserDataHolderBase implements FileEditor {
 
-    private JPanel mainPanel;
-
     private static final String NAME = "Data Editor";
 
+    private JPanel mainPanel;
+
+    private String filePath;
+    private String delimiter;
+
     DataEditor(String filePath) {
+        this.filePath = filePath;
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(UIUtil.getTreeTextBackground());
+    }
+
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
     }
 
     @NotNull
@@ -45,7 +52,6 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
 
     @Override
     public void setState(@NotNull FileEditorState state) {
-
     }
 
     @Override
@@ -65,17 +71,14 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
 
     @Override
     public void deselectNotify() {
-
     }
 
     @Override
     public void addPropertyChangeListener(@NotNull PropertyChangeListener listener) {
-
     }
 
     @Override
     public void removePropertyChangeListener(@NotNull PropertyChangeListener listener) {
-
     }
 
     @Nullable
@@ -92,6 +95,5 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
 
     @Override
     public void dispose() {
-
     }
 }
