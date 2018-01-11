@@ -1,9 +1,7 @@
 package de.pavloff.daed.editor;
 
 import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.fileEditor.FileEditor;
-import com.intellij.openapi.fileEditor.FileEditorPolicy;
-import com.intellij.openapi.fileEditor.FileEditorProvider;
+import com.intellij.openapi.fileEditor.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +30,7 @@ public class DataEditorProvider implements ApplicationComponent, FileEditorProvi
 
     @NotNull
     public FileEditorPolicy getPolicy() {
-        return FileEditorPolicy.HIDE_DEFAULT_EDITOR;
+        return FileEditorPolicy.PLACE_AFTER_DEFAULT_EDITOR;
     }
 
 }
