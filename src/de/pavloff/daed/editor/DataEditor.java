@@ -6,6 +6,9 @@ import com.intellij.openapi.fileEditor.FileEditorLocation;
 import com.intellij.openapi.fileEditor.FileEditorState;
 import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.util.ui.UIUtil;
+import de.pavloff.daed.ui.CodePanel;
+import de.pavloff.daed.ui.RecommendPanel;
+import de.pavloff.daed.ui.TablePanel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,8 +27,18 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
 
     DataEditor(String filePath) {
         this.filePath = filePath;
+
         mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(UIUtil.getTreeTextBackground());
+        mainPanel.setBackground(UIUtil.getEditorPaneBackground());
+
+        RecommendPanel recommend = new RecommendPanel();
+        mainPanel.add(recommend.getComponent(), BorderLayout.SOUTH);
+
+        CodePanel code = new CodePanel();
+        mainPanel.add(code.getComponent(), BorderLayout.WEST);
+
+        TablePanel table = new TablePanel();
+        mainPanel.add(table.getComponent(), BorderLayout.CENTER);
     }
 
     public void setDelimiter(String delimiter) {
