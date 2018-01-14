@@ -4,6 +4,7 @@ import com.intellij.codeHighlighting.BackgroundEditorHighlighter;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorLocation;
 import com.intellij.openapi.fileEditor.FileEditorState;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.util.ui.UIUtil;
 import de.pavloff.daed.ui.CodePanel;
@@ -15,6 +16,13 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 public class DataEditor extends UserDataHolderBase implements FileEditor {
 
@@ -22,11 +30,43 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
 
     private JPanel mainPanel;
 
-    private String filePath;
-    private String delimiter;
+    private String delimiter = ",";
+    private int sampleRows = 10;
 
     DataEditor(String filePath) {
-        this.filePath = filePath;
+        String[] names = new String[0];
+        String[][] data = new String[0][0];
+
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(filePath));
+            String line = br.readLine();
+            String[] values;
+
+            if (line != null) {
+                values = line.split(delimiter);
+                names = new String[values.length];
+                for (int i = 0; i < values.length; i++) {
+                    names[i] = "column_" + i;
+                }
+                data = new String[sampleRows][values.length];
+            }
+
+            int currentRow = 0;
+            while (line != null && currentRow < sampleRows) {
+                values = line.split(delimiter);
+                data[currentRow] = values;
+                line = br.readLine();
+                currentRow += 1;
+            }
+
+            br.close();
+
+        } catch (IOException e) {
+            Messages.showErrorDialog("An error has occurred " +
+                    "while reading the file " + filePath +
+                    "\n" + e.getMessage(), "Error");
+        }
 
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(UIUtil.getEditorPaneBackground());
@@ -37,7 +77,7 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
         CodePanel code = new CodePanel();
         mainPanel.add(code.getComponent(), BorderLayout.WEST);
 
-        TablePanel table = new TablePanel();
+        TablePanel table = new TablePanel(names, data);
         mainPanel.add(table.getComponent(), BorderLayout.CENTER);
     }
 
