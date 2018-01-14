@@ -14,21 +14,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 public class DataEditor extends UserDataHolderBase implements FileEditor {
 
     private static final String NAME = "Data Editor";
 
-    private JPanel mainPanel;
+    private JSplitPane mainPanel;
 
     private String delimiter = ",";
     private int sampleRows = 10;
@@ -68,17 +63,17 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
                     "\n" + e.getMessage(), "Error");
         }
 
-        mainPanel = new JPanel(new BorderLayout());
+        CodePanel code = new CodePanel();
+        TablePanel table = new TablePanel(names, data);
+        RecommendPanel recommend = new RecommendPanel();
+
+        JSplitPane topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, code, table);
+        topPanel.setOneTouchExpandable(true);
+        mainPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPanel, recommend);
         mainPanel.setBackground(UIUtil.getEditorPaneBackground());
 
-        RecommendPanel recommend = new RecommendPanel();
-        mainPanel.add(recommend.getComponent(), BorderLayout.SOUTH);
-
-        CodePanel code = new CodePanel();
-        mainPanel.add(code.getComponent(), BorderLayout.WEST);
-
-        TablePanel table = new TablePanel(names, data);
-        mainPanel.add(table.getComponent(), BorderLayout.CENTER);
+        topPanel.setDividerSize(3);
+        mainPanel.setDividerSize(3);
     }
 
     public void setDelimiter(String delimiter) {
