@@ -64,7 +64,7 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
         }
 
         CodePanel code = new CodePanel();
-        TablePanel table = new TablePanel(names, data);
+        TablePanel table = new TablePanel(data, names);
         RecommendPanel recommend = new RecommendPanel();
 
         JSplitPane topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, code, table);

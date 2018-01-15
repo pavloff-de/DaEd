@@ -9,11 +9,11 @@ import java.awt.*;
 
 public class TablePanel extends JPanel {
 
-    public TablePanel(String[] names, String[][] data) {
+    public TablePanel(String[][] data, String[] names) {
         setBorder(BorderFactory.createRaisedBevelBorder());
         setLayout(new BorderLayout(10, 10));
 
-        DataTableModel dataModel = new DataTableModel(names, data);
+        DataTableModel dataModel = new DataTableModel(data, names);
         JTable table = new JBTable(dataModel);
         JScrollPane scrollPane = new JBScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
