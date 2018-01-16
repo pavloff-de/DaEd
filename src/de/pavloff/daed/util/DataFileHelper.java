@@ -55,7 +55,8 @@ public class DataFileHelper {
             return new String[0][0];
         }
 
-        int nonEmptyLines = lines.length;
+        int firstDataRow = getHeader() + 1;
+        int nonEmptyLines = lines.length - firstDataRow;
         int numValues = 0;
 
         for (int i = lines.length - 1; i > 0; i--) {
@@ -71,11 +72,10 @@ public class DataFileHelper {
             return new String[0][0];
         }
 
-        int firstDataRow = getHeader() + 1;
         String[][] data = new String[nonEmptyLines][numValues];
 
-        for (int i = firstDataRow; i < nonEmptyLines; i++) {
-            data[i] = lines[i].split(delimiter);
+        for (int i = 0; i < nonEmptyLines; i++) {
+            data[i] = lines[i + firstDataRow].split(delimiter);
         }
 
         return data;
