@@ -4,20 +4,17 @@ import com.intellij.codeHighlighting.BackgroundEditorHighlighter;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorLocation;
 import com.intellij.openapi.fileEditor.FileEditorState;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.util.ui.UIUtil;
 import de.pavloff.daed.ui.CodePanel;
 import de.pavloff.daed.ui.RecommendPanel;
 import de.pavloff.daed.ui.TablePanel;
+import de.pavloff.daed.util.DataFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
 public class DataEditor extends UserDataHolderBase implements FileEditor {
 
@@ -29,38 +26,17 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
     private int sampleRows = 10;
 
     DataEditor(String filePath) {
-        String[] names = new String[0];
-        String[][] data = new String[0][0];
+        DataFileHelper dh = new DataFileHelper(filePath);
 
-        BufferedReader br;
-        try {
-            br = new BufferedReader(new FileReader(filePath));
-            String line = br.readLine();
-            String[] values;
+        String[][] data = dh.getData(sampleRows);
+        String[] names = dh.getNames();
 
-            if (line != null) {
-                values = line.split(delimiter);
-                names = new String[values.length];
-                for (int i = 0; i < values.length; i++) {
-                    names[i] = "column_" + i;
-                }
-                data = new String[sampleRows][values.length];
+        if (names.length == 0 && data.length != 0 && data[0].length != 0) {
+            names = new String[data[0].length];
+
+            for (int i = 0; i < data[0].length; i++) {
+                names[i] = "column" + i;
             }
-
-            int currentRow = 0;
-            while (line != null && currentRow < sampleRows) {
-                values = line.split(delimiter);
-                data[currentRow] = values;
-                line = br.readLine();
-                currentRow += 1;
-            }
-
-            br.close();
-
-        } catch (IOException e) {
-            Messages.showErrorDialog("An error has occurred " +
-                    "while reading the file " + filePath +
-                    "\n" + e.getMessage(), "Error");
         }
 
         CodePanel code = new CodePanel();
