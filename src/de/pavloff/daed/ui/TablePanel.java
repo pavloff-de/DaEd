@@ -15,6 +15,8 @@ public class TablePanel extends JPanel {
 
         DataTableModel dataModel = new DataTableModel(data, names);
         JTable table = new JBTable(dataModel);
+        table.getTableHeader().setReorderingAllowed(false);
+
         JScrollPane scrollPane = new JBScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
     }
