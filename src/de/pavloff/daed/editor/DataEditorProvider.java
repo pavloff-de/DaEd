@@ -1,18 +1,20 @@
 package de.pavloff.daed.editor;
 
 import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.fileEditor.*;
+import com.intellij.openapi.fileEditor.FileEditor;
+import com.intellij.openapi.fileEditor.FileEditorPolicy;
+import com.intellij.openapi.fileEditor.FileEditorProvider;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
 public class DataEditorProvider implements ApplicationComponent, FileEditorProvider {
-    /** The editor component name. */
+
     private static final String NAME = "DataEditorProvider";
-    /** The editor type id. */
     private static final String EDITOR_TYPE_ID = "Data Editor";
 
-    public DataEditorProvider() {}
+    public DataEditorProvider() {
+    }
 
     public boolean accept(@NotNull Project project, @NotNull VirtualFile virtualFile) {
         return "csv".equalsIgnoreCase(virtualFile.getExtension());
