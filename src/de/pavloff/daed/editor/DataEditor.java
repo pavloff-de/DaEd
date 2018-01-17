@@ -31,14 +31,6 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
         String[][] data = dh.getData(sampleRows);
         String[] names = dh.getNames();
 
-        if (names.length == 0 && data.length != 0 && data[0].length != 0) {
-            names = new String[data[0].length];
-
-            for (int i = 0; i < data[0].length; i++) {
-                names[i] = "column" + i;
-            }
-        }
-
         CodePanel code = new CodePanel();
         TablePanel table = new TablePanel(data, names);
         RecommendPanel recommend = new RecommendPanel();

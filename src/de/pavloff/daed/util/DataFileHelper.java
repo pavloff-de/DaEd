@@ -12,54 +12,47 @@ public class DataFileHelper {
 
     private String filePath;
     private String[] lines;
-    private String fileExt;
     private String delimiter;
+    private int header;
 
     public DataFileHelper(String filePath) {
         this.filePath = filePath;
-        readFile(3);
-    }
-
-    public String getFileExt() {
-        if (fileExt == null) {
-            int idx = filePath.lastIndexOf('.');
-            if (idx > 0) {
-                fileExt = filePath.substring(idx + 1);
-            } else {
-                fileExt = "";
-            }
-        }
-        return fileExt;
-    }
-
-    public String getDelimiter() {
-        if (delimiter == null) {
-            delimiter = guessDelimiter();
-        }
-        return delimiter;
+        initialize(3);
     }
 
     public String[] getNames() {
-        int headerRow = getHeader();
-        if (headerRow != -1) {
-            return lines[headerRow].split(delimiter);
+        if (header != -1) {
+            return lines[header].split(delimiter);
         }
+
+        if (delimiter.length() != 0) {
+            int numOfValues = lines[0].split(delimiter).length;
+
+            String[] names = new String[numOfValues];
+            for (int i = 0; i < numOfValues; i++) {
+                names[i] = "column" + i;
+            }
+
+            return names;
+        }
+
         return new String[0];
     }
 
     public String[][] getData(int rows) {
-        readFile(rows);
-        getDelimiter();
+        if (rows > lines.length) {
+            lines = readFile(rows);
+        }
 
         if (delimiter.length() == 0 || lines.length == 0) {
             return new String[0][0];
         }
 
         int firstDataRow = getHeader() + 1;
-        int nonEmptyLines = lines.length - firstDataRow;
+        int nonEmptyLines = rows - firstDataRow;
         int numValues = 0;
 
-        for (int i = lines.length - 1; i > 0; i--) {
+        for (int i = nonEmptyLines - 1; i > 0; i--) {
             if (lines[i] == null) {
                 nonEmptyLines -= 1;
             } else {
@@ -81,11 +74,15 @@ public class DataFileHelper {
         return data;
     }
 
+    private void initialize(int rows) {
+        lines = readFile(rows);
+        delimiter = guessDelimiter();
+        header = getHeader();
+    }
+
     private int getHeader() {
         // -1 if not found
         // 0 if names in the first line
-
-        getDelimiter();
 
         if (delimiter.length() == 0 || lines.length == 0) {
             return -1;
@@ -226,12 +223,12 @@ public class DataFileHelper {
         return guessedDelimiter;
     }
 
-    private void readFile(int rows) {
+    private String[] readFile(int rows) {
         if (rows < 3) {
             rows = 3;
         }
 
-        lines = new String[0];
+        String[] firstRows = new String[0];
 
         BufferedReader br;
         try {
@@ -239,12 +236,12 @@ public class DataFileHelper {
             String line = br.readLine();
 
             if (line != null) {
-                lines = new String[rows];
+                firstRows = new String[rows];
             }
 
             int currentRow = 0;
-            while (line != null && currentRow < lines.length) {
-                lines[currentRow] = line;
+            while (line != null && currentRow < firstRows.length) {
+                firstRows[currentRow] = line;
                 line = br.readLine();
                 currentRow += 1;
             }
@@ -253,5 +250,7 @@ public class DataFileHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return firstRows;
     }
 }
