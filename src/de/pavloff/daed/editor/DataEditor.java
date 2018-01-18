@@ -6,9 +6,9 @@ import com.intellij.openapi.fileEditor.FileEditorLocation;
 import com.intellij.openapi.fileEditor.FileEditorState;
 import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.util.ui.UIUtil;
-import de.pavloff.daed.ui.CodePanel;
-import de.pavloff.daed.ui.RecommendPanel;
-import de.pavloff.daed.ui.TablePanel;
+import de.pavloff.daed.model.CodeModel;
+import de.pavloff.daed.model.RecommendModel;
+import de.pavloff.daed.model.TableModel;
 import de.pavloff.daed.util.DataFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,21 +31,20 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
         String[][] data = dh.getData(sampleRows);
         String[] names = dh.getNames();
 
-        CodePanel code = new CodePanel();
-        TablePanel table = new TablePanel(data, names);
-        RecommendPanel recommend = new RecommendPanel();
+        CodeModel codeModel = new CodeModel();
+        TableModel tableModel = new TableModel(data, names);
+        RecommendModel recommendModel = new RecommendModel();
 
-        JSplitPane topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, code, table);
-        topPanel.setOneTouchExpandable(true);
-        mainPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPanel, recommend);
-        mainPanel.setBackground(UIUtil.getEditorPaneBackground());
-
+        JSplitPane topPanel = new JSplitPane(
+                JSplitPane.HORIZONTAL_SPLIT, codeModel.getView(), tableModel.getView());
         topPanel.setDividerSize(3);
-        mainPanel.setDividerSize(3);
-    }
 
-    public void setDelimiter(String delimiter) {
-        this.delimiter = delimiter;
+        mainPanel = new JSplitPane(
+                JSplitPane.VERTICAL_SPLIT, topPanel, recommendModel.getView());
+        mainPanel.setBackground(UIUtil.getEditorPaneBackground());
+        mainPanel.setOneTouchExpandable(true);
+        mainPanel.setDividerSize(3);
+
     }
 
     @NotNull
