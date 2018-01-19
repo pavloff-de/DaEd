@@ -14,7 +14,7 @@ public class DataEditorFactory {
     }
 
     public DataEditor getEditor(String path) {
-        String realPath = new File(path).getPath().toLowerCase();
+        String realPath = new File(path).getPath();
         DataEditor editor = fileToEditor.get(realPath);
         if (editor == null) {
             editor = new DataEditor(realPath);
