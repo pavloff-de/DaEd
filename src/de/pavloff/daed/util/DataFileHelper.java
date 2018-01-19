@@ -1,5 +1,7 @@
 package de.pavloff.daed.util;
 
+import com.intellij.openapi.ui.Messages;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -248,7 +250,8 @@ public class DataFileHelper {
 
             br.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Messages.showErrorDialog("An error occurred while reading file.\n"
+                    + e.getMessage(), "Error");
         }
 
         return firstRows;
