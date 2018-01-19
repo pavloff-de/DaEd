@@ -22,7 +22,7 @@ public class DataEditorProvider implements ApplicationComponent, FileEditorProvi
 
     @NotNull
     public FileEditor createEditor(@NotNull Project project, @NotNull VirtualFile virtualFile) {
-        return new DataEditor(virtualFile.getPath());
+        return DataEditorFactory.getInstance().getEditor(virtualFile.getPath());
     }
 
     @NotNull
