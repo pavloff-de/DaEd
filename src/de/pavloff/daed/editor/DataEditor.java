@@ -21,6 +21,9 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
     private static final String NAME = "Data Editor";
 
     private JSplitPane mainPanel;
+    private CodeModel codeModel;
+    private TableModel tableModel;
+    private RecommendModel recommendModel;
 
     private String delimiter = ",";
     private int sampleRows = 10;
@@ -31,9 +34,9 @@ public class DataEditor extends UserDataHolderBase implements FileEditor {
         String[][] data = dh.getData(sampleRows);
         String[] names = dh.getNames();
 
-        CodeModel codeModel = new CodeModel();
-        TableModel tableModel = new TableModel(data, names);
-        RecommendModel recommendModel = new RecommendModel();
+        codeModel = new CodeModel();
+        tableModel = new TableModel(data, names);
+        recommendModel = new RecommendModel();
 
         JSplitPane topPanel = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT, codeModel.getView(), tableModel.getView());
